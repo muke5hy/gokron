@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron Job Manager</title>
+</head>
+
+<body>
+    <h1>Cron Job Manager</h1>
+    <ul>
+        {{range .CronJobs}}
+        <li>{{.Command}} - {{.Schedule}}</li>
+        {{else}}
+        <li>No cron jobs</li>
+        {{end}}
+    </ul>
+    <h2>Add Cron Job</h2>
+    <form method="POST" action="/api/cron-job">
+        <label for="command">Command:</label>
+        <input type="text" id="command" name="command" required>
+        <br>
+        <label for="schedule">Schedule:</label>
+        <input type="text" id="schedule" name="schedule" required>
+        <br>
+        <button type="submit">Add Cron Job</button>
+    </form>
+</body>
+
+</html>
