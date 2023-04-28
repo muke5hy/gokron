@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/yourusername/cron-job-product/db"
+	"github.com/yourusername/cron-job-product/store"
 )
 
 type CronJob struct {
@@ -18,18 +18,18 @@ type CronJob struct {
 func CreateCronJob(cronJob *CronJob) error {
 	cronJob.CreatedAt = time.Now()
 	cronJob.UpdatedAt = time.Now()
-	return db.DB.Create(cronJob).Error
+	return store.DB.Create(cronJob).Error
 }
 
 func ListCronJobs() ([]CronJob, error) {
 	var cronJobs []CronJob
-	err := db.DB.Find(&cronJobs).Error
+	err := store.DB.Find(&cronJobs).Error
 	return cronJobs, err
 }
 
 func GetCronJob(id uint) (CronJob, error) {
 	var cronJob CronJob
-	err := db.DB.First(&cronJob, id).Error
+	err := store.DB.First(&cronJob, id).Error
 	if err != nil {
 		return CronJob{}, errors.New("Cron job not found")
 	}
@@ -46,7 +46,7 @@ func UpdateCronJob(id uint, updatedCronJob *CronJob) error {
 	cronJob.Schedule = updatedCronJob.Schedule
 	cronJob.UpdatedAt = time.Now()
 
-	return db.DB.Save(&cronJob).Error
+	return store.DB.Save(&cronJob).Error
 }
 
 func DeleteCronJob(id uint) error {
@@ -55,5 +55,5 @@ func DeleteCronJob(id uint) error {
 		return err
 	}
 
-	return db.DB.Delete(&cronJob).Error
+	return store.DB.Delete(&cronJob).Error
 }

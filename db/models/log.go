@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/yourusername/cron-job-product/db"
+	"github.com/yourusername/cron-job-product/store"
 )
 
 type Log struct {
@@ -15,13 +15,13 @@ type Log struct {
 }
 
 func CreateLog(log *Log) error {
-	return db.DB.Create(log).Error
+	return store.DB.Create(log).Error
 }
 
 func ListLogs(cronJobID uint, filters map[string]interface{}) ([]Log, error) {
 	var logs []Log
 
-	query := db.DB.Where("cron_job_id = ?", cronJobID)
+	query := store.DB.Where("cron_job_id = ?", cronJobID)
 
 	// Apply filters if any
 	if len(filters) > 0 {
