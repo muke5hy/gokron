@@ -1,4 +1,4 @@
-package store
+package db
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ var DB *gorm.DB
 func Init() {
 	var err error
 	dbURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-		"localhost", "5432", "username", "dbname", "password", "disable")
+		"localhost", "5435", "postgres", "dbname", "root", "disable")
 
 	DB, err = gorm.Open("postgres", dbURL)
 	if err != nil {

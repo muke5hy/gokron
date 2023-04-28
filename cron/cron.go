@@ -1,8 +1,11 @@
 package cron
 
 import (
+	"fmt"
+
 	"github.com/robfig/cron/v3"
 	"github.com/yourusername/cron-job-product/db/models"
+	"github.com/yourusername/cron-job-product/repository"
 )
 
 var cronManager *cron.Cron
@@ -15,7 +18,11 @@ func Init() {
 }
 
 func syncCronJobs() {
-	cronJobs, err := models.ListCronJobs()
+	CronJobRepo, err := repository.NewCronJobRepoStruct()
+	if err != nil {
+		fmt.Println(err)
+	}
+	cronJobs, err := CronJobRepo.ListCronJobs()
 	if err != nil {
 		return
 	}
