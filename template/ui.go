@@ -1,17 +1,23 @@
-package main
+package template
 
 import (
+	"fmt"
 	"html/template"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
-	"github.com/yourusername/cron-job-product/db/models"
+	"github.com/yourusername/cron-job-product/repository"
 )
 
-func registerUIRoutes(router *gin.Engine) {
+func RegisterUIRoutes(router *gin.Engine) {
+
+	CronJobRepo, err := repository.NewCronJobRepoStruct()
+	if err != nil {
+		fmt.Println(err)
+	}
 	// Serve the HTML template
 	router.GET("/", func(c *gin.Context) {
-		cronJobs, _ := models.ListCronJobs()
+		cronJobs, _ := CronJobRepo.ListCronJobs()
 		tmplPath := filepath.Join("html", "index.html")
 		tmpl, _ := template.ParseFiles(tmplPath)
 		tmpl.Execute(c.Writer, gin.H{"CronJobs": cronJobs})

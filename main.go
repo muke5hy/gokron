@@ -3,12 +3,13 @@ package main
 import (
 	"github.com/yourusername/cron-job-product/api"
 	"github.com/yourusername/cron-job-product/cron"
-	"github.com/yourusername/cron-job-product/store"
+	"github.com/yourusername/cron-job-product/db"
+	"github.com/yourusername/cron-job-product/template"
 )
 
 func main() {
 	// Initialize the database
-	store.Init()
+	db.Init()
 	// Initialize the cron manager
 	cron.Init()
 
@@ -16,8 +17,8 @@ func main() {
 	router := api.Init()
 
 	// Register the UI routes
-	registerUIRoutes(router)
+	template.RegisterUIRoutes(router)
 
 	// Run the server
-	router.Run(":8080")
+	router.Run(":8000")
 }
