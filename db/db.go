@@ -2,21 +2,32 @@ package db
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 	"github.com/yourusername/cron-job-product/db/models"
 )
 
 var DB *gorm.DB
 
 func Init() {
-	var err error
-	dbURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-		"localhost", "5435", "postgres", "dbname", "root", "disable")
-
-	DB, err = gorm.Open("postgres", dbURL)
+	// Load environment variables from .env.local or .env file
+	err := godotenv.Load(".env")
 	if err != nil {
+		err = godotenv.Load()
+		if err != nil {
+			panic("failed to load environment variables")
+		}
+	}
+
+	var dbErr error
+	dbURL := os.Getenv("DATABASE_URL")
+	fmt.Println(dbURL)
+	DB, dbErr = gorm.Open("postgres", dbURL)
+	if dbErr != nil {
+		fmt.Println(dbErr)
 		panic("failed to connect to database")
 	}
 
